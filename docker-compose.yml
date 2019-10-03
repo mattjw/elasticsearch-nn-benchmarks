@@ -10,7 +10,6 @@ services:
     - bootstrap.memory_lock=true
     - cluster.initial_master_nodes=elastic
     - network.host=_site_
-    - path.repo=/usr/share/elasticsearch/data/snapshots
     ulimits:
       memlock:
         soft: -1
@@ -21,15 +20,12 @@ services:
     volumes:
     - ./data/esdata1:/usr/share/elasticsearch/data:delegated
     - ./data/esdata/snapshots:/usr/share/elasticsearch/data/snapshots
-    - ./config/elastic/:/usr/share/elasticsearch/external
-    networks:
-    - gs2-net
+    ports:
+      - "9200:9200"
 
   kibana:
     image: docker.elastic.co/elasticsearch/kibana:7.3.0
-    volumes:
-    - ./config/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
-    networks:
-      - gs2-net
+    ports:
+      - "5601:5601"
     depends_on:
       - elastic
