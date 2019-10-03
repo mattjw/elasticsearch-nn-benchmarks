@@ -1,6 +1,6 @@
 from invoke import task
 
 
-@task
-def docker_compose(ctx):
+@task(name="docker-env")
+def docker_env(ctx):
     ctx.run("docker-compose up -d")

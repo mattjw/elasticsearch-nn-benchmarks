@@ -2,9 +2,9 @@ version: '3.7'
 services:
 
   elastic:
-    image: elasticsearch-nn
+    image: elasticsearch-fcs
     build:
-      context: ./docker-images/elasticsearch-nn-plugin/
+      context: ./docker-images/elasticsearch-fcs-plugin/
     environment:
     - node.name=elastic
     - bootstrap.memory_lock=true
@@ -24,7 +24,7 @@ services:
       - "9200:9200"
 
   kibana:
-    image: docker.elastic.co/elasticsearch/kibana:7.3.0
+    image: docker.elastic.co/kibana/kibana:7.4.0
     ports:
       - "5601:5601"
     depends_on:
