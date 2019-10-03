@@ -1,0 +1,16 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pipenv = "*"
+invoke = "~=1.2.0"
+
+[packages]
+elasticsearch = "~=7.0.0"
+
+[requires]
+python_version = "3.6.8"
+
+[scripts]
