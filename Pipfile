@@ -4,10 +4,9 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pipenv = "*"
-invoke = "~=1.2.0"
 
 [packages]
+invoke = "~=1.2.0"
 requests = "~=2.22.0"
 
 [requires]

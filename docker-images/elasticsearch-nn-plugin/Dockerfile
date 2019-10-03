@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:7.2
+FROM docker.elastic.co/elasticsearch/elasticsearch:7.3.0
 
 COPY plugins/ /usr/share/elasticsearch/external/plugins/
 
