@@ -11,9 +11,9 @@ def client():
     return Elasticsearch(ELASTICSEARCH_URL)
 
 
-def read_vectors(fpath: str) -> Generator[Tuple[str, List[float]], None, None]:
-    """Yields (term, vector) pairs."""
+def read_vectors(fpath: str) -> Generator[Tuple[int, str, List[float]], None, None]:
+    """Yields (index, term, vector) triples."""
     with open(fpath, newline='\n') as f_in:
         for index, line in enumerate(f_in):
             row = line.strip().split(" ")
-            yield (row[0], list(map(float, row[1:],)))
+            yield (index, row[0], list(map(float, row[1:],)))
