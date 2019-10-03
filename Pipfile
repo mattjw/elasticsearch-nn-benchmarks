@@ -8,6 +8,8 @@ verify_ssl = true
 [packages]
 invoke = "~=1.2.0"
 requests = "~=2.22.0"
+elasticsearch = "~=7.0.5"
+numpy = "~=1.14.1"
 
 [requires]
 python_version = "3.6.8"
