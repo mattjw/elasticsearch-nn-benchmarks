@@ -18,8 +18,8 @@ services:
         soft: 65536
         hard: 65536
     volumes:
-    - ./data/esdata1:/usr/share/elasticsearch/data:delegated
-    - ./data/esdata/snapshots:/usr/share/elasticsearch/data/snapshots
+    - ./docker-data/esdata:/usr/share/elasticsearch/data:delegated
+    - ./docker-data/esdata/snapshots:/usr/share/elasticsearch/data/snapshots
     ports:
       - "9200:9200"
 
