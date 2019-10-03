@@ -8,7 +8,7 @@ pipenv = "*"
 invoke = "~=1.2.0"
 
 [packages]
-elasticsearch = "~=7.0.5"
+requests = "~=2.22.0"
 
 [requires]
 python_version = "3.6.8"
