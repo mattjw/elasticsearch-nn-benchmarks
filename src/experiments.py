@@ -5,7 +5,7 @@ from typing import List
 from populate_index import populate_vectors
 from query_index import test_query_fcs, test_query_dense
 
-QUERY_EXPERIMENT_NUM_REPEATS = 1
+QUERY_EXPERIMENT_NUM_REPEATS = 1000
 TEST_CASES_DIR = "./data/slices/"
 
 
