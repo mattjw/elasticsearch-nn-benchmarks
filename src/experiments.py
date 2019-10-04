@@ -53,7 +53,7 @@ def run_experiments():
         test_case_results["dense"] = record
 
         print(
-            "{}\n  fcs:   {}\n  dense: {}".format(
+            "{}\n    fcs:   {}\n    dense: {}".format(
                 test_case_results["test_case"], test_case_results["fcs"], test_case_results["dense"]))
 
 

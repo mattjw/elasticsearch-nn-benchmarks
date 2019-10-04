@@ -34,7 +34,6 @@ def query_nearest_vectors_fcs(vector_base64: str) -> List[Tuple[str, float]]:
         _source=[TERM_FIELD]
     )
     neighbours = list((str(hit["_source"][TERM_FIELD]), float(hit["_score"])) for hit in hits["hits"]["hits"])
-    print(neighbours)  # ~
     return neighbours
 
 
@@ -44,7 +43,6 @@ def test_query_fcs(fpath, num_repeats) -> float:
     t0 = time.time()
     for _ in range(num_repeats):
         vector = random.choice(vectors)
-        vector = vectors[0]  # ~
         query_nearest_vectors_fcs(vector["vector"])
     return (time.time() - t0) / num_repeats
 
@@ -94,7 +92,6 @@ def query_nearest_vectors_dense(vector: List[float]) -> List[Tuple[str, float]]:
     # )
 
     neighbours = list((str(hit["_source"][TERM_FIELD]), float(hit["_score"])) for hit in hits["hits"]["hits"])
-    print(neighbours)  #~
     return neighbours
 
 
@@ -104,6 +101,5 @@ def test_query_dense(fpath, num_repeats) -> float:
     t0 = time.time()
     for _ in range(num_repeats):
         vector = random.choice(vectors)
-        vector = vectors[0]  #~
         query_nearest_vectors_dense(vector["vector"])
     return (time.time() - t0) / num_repeats
