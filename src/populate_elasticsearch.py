@@ -1,4 +1,5 @@
 import base64
+import time
 
 from elasticsearch.helpers import streaming_bulk
 import numpy as np
@@ -9,11 +10,12 @@ from utils import client, read_vectors
 
 DBIG_NUMPY_TYPE = np.dtype('>f8')
 
-BULK_BATCH_SIZE = 1000
+BULK_BATCH_SIZE = 500
 
 TERM_FIELD = "term"
 FCS_VECTOR_FIELD = "vector_fcs"
 DENSE_VECTOR_FIELD = "vector_dense"
+
 
 def reset_index():
     if client().indices.exists(INDEX_NAME):
@@ -45,6 +47,9 @@ def reset_index():
     )
 
 
+#
+# Populate FCS vectors
+
 def base64_encode_array(arr):
     """Encode float array in base 64 format supported by the Fast Cosine Similarity (FCS) plugin."""
     return base64.b64encode(np.array(arr).astype(DBIG_NUMPY_TYPE)).decode("utf-8")
@@ -66,6 +71,35 @@ def load_fcs_vectors(fpath):
     return vectors
 
 
+def populate_fcs_vectors(fpath, bulk_batch_size=BULK_BATCH_SIZE) -> float:
+    """
+    Loads vectors and saves them into an Elasticsearch index.
+
+    Returns:
+        Total run time for the storage part. Specifically, this does NOT include the time to load from file.
+    """
+    insertions = [
+        {
+            "_index": INDEX_NAME, "_type": "_doc", "_id": vec["id"],
+            "_source": {TERM_FIELD: vec["term"], FCS_VECTOR_FIELD: vec["vector"]}
+        }
+        for vec in load_fcs_vectors(fpath)]
+    reset_index()
+
+    t0 = time.time()
+    action_results = list(streaming_bulk(
+            client(), actions=insertions, chunk_size=bulk_batch_size, max_retries=0, raise_on_exception=True,
+            raise_on_error=True, yield_ok=False))
+    client().indices.refresh(INDEX_NAME)
+    dur = time.time() - t0
+
+    assert not action_results
+    return dur
+
+
+#
+# Populate dense vectors
+
 def load_dense_vectors(fpath):
     """
     Load vectors from file and return them in Elasticsearch dense vector format (7.3+).
@@ -75,24 +109,31 @@ def load_dense_vectors(fpath):
     return [{"id": id, "term": term, "vector": vec} for id, term, vec in read_vectors(fpath)]
 
 
-def populate_fcs_vevtors(fpath, bulk_batch_size=BULK_BATCH_SIZE) -> float:
+def populate_dense_vectors(fpath, bulk_batch_size=BULK_BATCH_SIZE) -> float:
     """
     Loads vectors and saves them into an Elasticsearch index.
 
     Returns:
-        Total run time for the storage part. Specifically, this does NOT include the time to load
-        from file.
+        Total run time for the storage part. Specifically, this does NOT include the time to load from file.
     """
     insertions = [
         {
             "_index": INDEX_NAME, "_type": "_doc", "_id": vec["id"],
-            "_source": {TERM_FIELD: vec["term"], FCS_VECTOR_FIELD: vec["vector"]}
+            "_source": {TERM_FIELD: vec["term"], DENSE_VECTOR_FIELD: vec["vector"]}
         }
-        for vec in load_fcs_vectors(fpath)]
-
+        for vec in load_dense_vectors(fpath)]
     reset_index()
-    for result in streaming_bulk(client(), actions=insertions, chunk_size=bulk_batch_size):
-        print(result)
+
+    t0 = time.time()
+    action_results = list(streaming_bulk(
+            client(), actions=insertions, chunk_size=bulk_batch_size, max_retries=0, raise_on_exception=True,
+            raise_on_error=True, yield_ok=False))
+    client().indices.refresh(INDEX_NAME)
+    dur = time.time() - t0
+
+    assert not action_results
+    return dur
 
 
-populate_fcs_vevtors("./data/slices/vectors_dim200_num1000.txt")
+print(populate_fcs_vectors("./data/slices/vectors_dim200_num1000.txt"))
+print(populate_dense_vectors("./data/slices/vectors_dim200_num1000.txt"))

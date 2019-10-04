@@ -7,7 +7,7 @@ from constants import ELASTICSEARCH_URL
 
 
 @lru_cache(None)
-def client():
+def client() -> Elasticsearch:
     return Elasticsearch(ELASTICSEARCH_URL)
 
 
