@@ -13,19 +13,23 @@ experiments were run with the following set up:
 - Docker: Docker for Mac 2.1.0.3; Docker Engine 19.03.2; 11 GiB memory,
   6 CPUs; 1 GiB swap. 
 
+Install dependencies:
+
 ```bash
 pipenv sync
+```
+
+Do all data preparation for experiments to be excuted. This will involve
+downloading a large (1GB+) dataset of vectors: 
+
+```bash
 pipenv run invoke prep
 ```
 
-### Insertion performance
+### Run experiments
+
+Execute all experiments with:
 
 ```bash
-pipenv run -m BLABLA
-```
-
-# Query performance
-
-```bash
-pipenv run -m BLABLABLA
+pipenv run python -m experiments
 ```

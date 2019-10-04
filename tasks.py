@@ -34,3 +34,8 @@ def generate_data_slice(ctx, num: int):
 def slices(ctx):
     for exp in range(2, 6 + 1):
         generate_data_slice(ctx, 10**exp)
+
+
+@task(pre=[dataset, slices])
+def prep():
+    pass
