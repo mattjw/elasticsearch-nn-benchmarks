@@ -111,12 +111,8 @@ def populate_vectors(fpath, vector_type: Optional[str] = None, bulk_batch_size=B
     action_results = list(streaming_bulk(
         client(), actions=insertions, chunk_size=bulk_batch_size, max_retries=0, raise_on_exception=True,
         raise_on_error=True, yield_ok=False))
-    client().indices.refresh(INDEX_NAME)
+    client().indices.refresh(INDEX_NAME, )
     dur = time.time() - t0
 
     assert not action_results
     return dur
-
-
-print(populate_vectors("./data/slices/vectors_dim200_num1000.txt", "fcs"))
-print(populate_vectors("./data/slices/vectors_dim200_num1000.txt", "dense"))
