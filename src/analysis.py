@@ -10,6 +10,11 @@ from constants import REPORTS_DIR
 from experiments import REPORT_FPATH
 
 
+def save_fig(name):
+    plt.gcf().savefig(os.path.join(REPORTS_DIR, f"{name}.png"), bbox_inches="tight", dpi=300)
+    plt.gcf().savefig(os.path.join(REPORTS_DIR, f"{name}.pdf"), bbox_inches="tight")
+
+
 def normalise_method_columns(df_results, name):
     df = df_results.filter(regex=f"{name}\\.+").rename(lambda col: col.split(".")[1], axis=1)
     df.loc[:,"method"] = name
@@ -45,7 +50,7 @@ def plot_query_performance(df):
 
     plt.ylabel("Query rate [Queries per second]")
     plt.xlabel("Index size [Num vectors]")
-    plt.gcf().savefig(os.path.join(REPORTS_DIR, "query_performance.pdf"), bbox_inches="tight")
+    save_fig("query_performance")
 
 
 def plot_insertion_performance(df):
@@ -54,7 +59,7 @@ def plot_insertion_performance(df):
 
     plt.ylabel("Insertions rate [Insertions per second]")
     plt.xlabel("Dataset size [Num vectors]")
-    plt.gcf().savefig(os.path.join(REPORTS_DIR, "insertion_performance.pdf"), bbox_inches="tight")
+    save_fig("insertion_performance")
 
 
 def main():
