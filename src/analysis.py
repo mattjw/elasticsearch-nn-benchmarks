@@ -1,6 +1,7 @@
 """Plots and other analysis."""
 
 import os
+import csv
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -40,7 +41,7 @@ def plot_grouped(df, dependent_col):
 
 def plot_query_performance(df):
     df = plot_grouped(df, "query_time_qps")
-    df.to_csv(os.path.join(REPORTS_DIR, "query_performance_qps.csv"), index=True)
+    df.to_csv(os.path.join(REPORTS_DIR, "query_performance_qps.csv"), index=True, quoting=csv.QUOTE_NONNUMERIC)
 
     plt.ylabel("Query rate [Queries per second]")
     plt.xlabel("Index size [Num vectors]")
@@ -49,7 +50,7 @@ def plot_query_performance(df):
 
 def plot_insertion_performance(df):
     df = plot_grouped(df, "populate_time_ips")
-    df.to_csv(os.path.join(REPORTS_DIR, "insertion_performance_ips.csv"), index=True)
+    df.to_csv(os.path.join(REPORTS_DIR, "insertion_performance_ips.csv"), index=True, quoting=csv.QUOTE_NONNUMERIC)
 
     plt.ylabel("Insertions rate [Insertions per second]")
     plt.xlabel("Dataset size [Num vectors]")
