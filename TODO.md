@@ -1,5 +1,2 @@
-- Check if compatible with more like this.
-- Convert results to table, and save them to file.
+- Check if compatible with MLT.
 - Consider cold cache scenario.
-- Add more info on methodology: one shard, one replica, etc.
-- Hard code result set size, rather than rely on default.

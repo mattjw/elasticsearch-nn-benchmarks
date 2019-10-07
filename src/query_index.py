@@ -2,7 +2,7 @@ import random
 import time
 from typing import List, Tuple
 
-from constants import INDEX_NAME
+from constants import INDEX_NAME, RESULT_SET_SIZE
 from populate_index import load_fcs_vectors, FCS_VECTOR_FIELD, DENSE_VECTOR_FIELD, TERM_FIELD, load_dense_vectors
 from utils import client
 
@@ -29,7 +29,8 @@ def query_nearest_vectors_fcs(vector_base64: str) -> List[Tuple[str, float]]:
                         }
                     }]
                 }
-            }
+            },
+            "size": RESULT_SET_SIZE
         },
         _source=[TERM_FIELD]
     )
@@ -68,13 +69,13 @@ def query_nearest_vectors_dense(vector: List[float]) -> List[Tuple[str, float]]:
                         }
                     }]
                 }
-            }
+            },
+            "size": RESULT_SET_SIZE
         },
         _source=[TERM_FIELD]
     )
 
-    # REMOVE ME: alternative way of scoring
-
+    # BELOW: Simplified query structure
     # hits = client().search(
     #     index=INDEX_NAME,
     #     body={
