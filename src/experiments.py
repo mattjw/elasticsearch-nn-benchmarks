@@ -1,12 +1,16 @@
+import csv
 import os
 import re
 from typing import List
+
+from pandas.io.json import json_normalize
 
 from populate_index import populate_vectors
 from query_index import test_query_fcs, test_query_dense
 
 QUERY_EXPERIMENT_NUM_REPEATS = 1000
 TEST_CASES_DIR = "./data/slices/"
+REPORT_FPATH = "./reports/results.csv"
 
 
 def test_cases(test_cases_dir=TEST_CASES_DIR) -> List[dict]:
@@ -25,6 +29,7 @@ def test_cases(test_cases_dir=TEST_CASES_DIR) -> List[dict]:
 
 
 def run_experiments():
+    df_results = None
     for case in test_cases():
         test_case_results = {"test_case": case}
 
@@ -55,6 +60,12 @@ def run_experiments():
         print(
             "{}\n    fcs:   {}\n    dense: {}".format(
                 test_case_results["test_case"], test_case_results["fcs"], test_case_results["dense"]))
+
+        if df_results is None:
+            df_results = json_normalize([test_case_results])
+        else:
+            df_results = df_results.append(json_normalize([test_case_results]))
+        df_results.to_csv(REPORT_FPATH, index=False, quoting=csv.QUOTE_NONNUMERIC)
 
 
 def main():
