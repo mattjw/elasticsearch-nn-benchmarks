@@ -5,12 +5,13 @@ from typing import List
 
 from pandas.io.json import json_normalize
 
+from constants import REPORTS_DIR
 from populate_index import populate_vectors
 from query_index import test_query_fcs, test_query_dense
 
 QUERY_EXPERIMENT_NUM_REPEATS = 1000
 TEST_CASES_DIR = "./data/slices/"
-REPORT_FPATH = "./reports/results.csv"
+REPORT_FPATH = os.path.join(REPORTS_DIR, "results.csv")
 
 
 def test_cases(test_cases_dir=TEST_CASES_DIR) -> List[dict]:
