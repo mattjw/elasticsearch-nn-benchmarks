@@ -58,3 +58,13 @@ datatype.
 **`fcs`**: The Cookpad fork of the [Fast Cosine Similarity](https://github.com/cookpad/fast-cosine-similarity)
 plugin for Elasticsearch. Originally written by [StaySense](https://github.com/StaySense/fast-cosine-similarity) and
 subsequently forked into various projects.
+
+## Results
+
+### Query performance
+
+![Query performance](./reports/query_performance.png)
+
+### Insertion performance
+
+![Insertion performance](./reports/insertion_performance.png)
